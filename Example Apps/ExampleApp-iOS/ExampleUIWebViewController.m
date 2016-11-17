@@ -8,6 +8,7 @@
 
 #import "ExampleUIWebViewController.h"
 #import "WebViewJavascriptBridge.h"
+#import "HYBridgeProtocol.h"
 
 @interface ExampleUIWebViewController ()
 @property WebViewJavascriptBridge* bridge;
@@ -20,6 +21,8 @@
     
     UIWebView* webView = [[UIWebView alloc] initWithFrame:self.view.bounds];
     [self.view addSubview:webView];
+    
+    [self registerIntercepter];
     
     [WebViewJavascriptBridge enableLogging];
     
@@ -35,6 +38,12 @@
     
     [self renderButtons:webView];
     [self loadExamplePage:webView];
+}
+
+// 注册拦截器，拦截所有的 JS Api 请求
+- (void)registerIntercepter
+{
+    [NSURLProtocol registerClass:[HYBridgeProtocol class]];
 }
 
 - (void)webViewDidStartLoad:(UIWebView *)webView {

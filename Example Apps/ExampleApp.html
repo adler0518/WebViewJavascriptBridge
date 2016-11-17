@@ -50,9 +50,20 @@
 		callbackButton.onclick = function(e) {
 			e.preventDefault()
 			log('JS calling handler "testObjcCallback"')
+                                 
+                                 //技术方案一
 			bridge.callHandler('testObjcCallback', {'foo': 'bar'}, function(response) {
 				log('JS got response', response)
 			})
+                                 
+<!--                                 //技术方案二，NSURLProtocol-->
+<!--                                 //TOOD，这个不应该放这里，需要放到修改iframe.url的位置-->
+<!--                                 s = "/__WVJB_QUEUE_MESSAGE__?";-->
+<!--                                 c = new XMLHttpRequest;-->
+<!--                                 c.open("HEAD", s + +new Date);-->
+<!--                                 o = {'key1':'adu', 'key2':'test'};-->
+<!--                                 c.setRequestHeader("data", encodeURI(JSON.stringify(o)));-->
+<!--                                 c.send(null);-->
 		}
 	})
 	</script>
