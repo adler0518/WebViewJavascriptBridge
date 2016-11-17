@@ -162,7 +162,7 @@
     if ([_base isCorrectProcotocolScheme:url]) {
         if ([_base isBridgeLoadedURL:url]) {
             [_base injectJavascriptFile];
-        } else if ([_base isQueueMessageURL:url]) {
+        } else if ([_base isQueueMessageURL:url]) { //简单理解为JS -> OC
             NSString *messageQueueString = [self _evaluateJavascript:[_base webViewJavascriptFetchQueyCommand]];
             [_base flushMessageQueue:messageQueueString];
         } else {

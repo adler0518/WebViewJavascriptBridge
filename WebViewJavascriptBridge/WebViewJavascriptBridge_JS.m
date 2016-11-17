@@ -59,6 +59,7 @@ NSString * WebViewJavascriptBridge_js() {
 		dispatchMessagesWithTimeoutSafety = false;
 	}
 	
+    //通过更新src的方式，来触发webView的回调处理，在其中处理OC注册到JS中的方法
 	function _doSend(message, responseCallback) {
 		if (responseCallback) {
 			var callbackId = 'cb_'+(uniqueId++)+'_'+new Date().getTime();
@@ -87,15 +88,18 @@ NSString * WebViewJavascriptBridge_js() {
 			var messageHandler;
 			var responseCallback;
 
-			if (message.responseId) {
+			if (message.responseId) { //JS -> OC OC回传给JS的数据，此次JS->OC调用结束END
+                //JS调用OC中的方法后，触发JS中的回调
 				responseCallback = responseCallbacks[message.responseId];
 				if (!responseCallback) {
 					return;
 				}
 				responseCallback(message.responseData);
 				delete responseCallbacks[message.responseId];
-			} else {
+			} else { //OC -> JS
+                //OC调用JS中注册的方法时执行
 				if (message.callbackId) {
+                    //OC中调用JS中注册方法时，回调函数被触发时执行，JS携带返回数据给OC
 					var callbackResponseId = message.callbackId;
 					responseCallback = function(responseData) {
 						_doSend({ handlerName:message.handlerName, responseId:callbackResponseId, responseData:responseData });
@@ -106,6 +110,7 @@ NSString * WebViewJavascriptBridge_js() {
 				if (!handler) {
 					console.log("WebViewJavascriptBridge: WARNING: no handler for message from ObjC:", message);
 				} else {
+                    //执行在JS中注册方法的函数体
 					handler(message.data, responseCallback);
 				}
 			}

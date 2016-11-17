@@ -74,15 +74,19 @@ static int logMaxLength = 500;
         }
         [self _log:@"RCVD" json:message];
         
+        // 有response信息，则直接回调
         NSString* responseId = message[@"responseId"];
-        if (responseId) {
+        if (responseId) { //OC -> JS JS回传给OC的数据，此次OC->JS调用结束END
+            //OC调用WEB中的方法后，回调OC中callback方法的触发
             WVJBResponseCallback responseCallback = _responseCallbacks[responseId];
             responseCallback(message[@"responseData"]);
             [self.responseCallbacks removeObjectForKey:responseId];
-        } else {
+        } else { //JS -> OC
+            //JS调用OC中注册到JS的方法时执行。
             WVJBResponseCallback responseCallback = NULL;
             NSString* callbackId = message[@"callbackId"];
             if (callbackId) {
+                //OC中注册时回调方法中传递给JS的数据，触发的JS中使用OC注册到JS中方法时的回调
                 responseCallback = ^(id responseData) {
                     if (responseData == nil) {
                         responseData = [NSNull null];
@@ -104,6 +108,7 @@ static int logMaxLength = 500;
                 continue;
             }
             
+            //JS调用OC中注册到JS的方法执行后，回调OC中注册时的callback方法
             handler(message[@"data"], responseCallback);
         }
     }
@@ -160,6 +165,12 @@ static int logMaxLength = 500;
 // Private
 // -------------------------------------------
 
+
+/**
+ 执行JS代码，可被子类定制
+
+ @param javascriptCommand <#javascriptCommand description#>
+ */
 - (void) _evaluateJavascript:(NSString *)javascriptCommand {
     [self.delegate _evaluateJavascript:javascriptCommand];
 }
@@ -172,9 +183,17 @@ static int logMaxLength = 500;
     }
 }
 
+
+/**
+ 真正执行call方法的位置， OC -> JS 【会输出SEND日志】
+
+ @param message <#message description#>
+ */
 - (void)_dispatchMessage:(WVJBMessage*)message {
     NSString *messageJSON = [self _serializeMessage:message pretty:NO];
     [self _log:@"SEND" json:messageJSON];
+    
+    //数据格式化，\u2028 行分隔符， \u2029 段落分隔符 JavaScript脚本执行的时候会报错，需要格式化
     messageJSON = [messageJSON stringByReplacingOccurrencesOfString:@"\\" withString:@"\\\\"];
     messageJSON = [messageJSON stringByReplacingOccurrencesOfString:@"\"" withString:@"\\\""];
     messageJSON = [messageJSON stringByReplacingOccurrencesOfString:@"\'" withString:@"\\\'"];
