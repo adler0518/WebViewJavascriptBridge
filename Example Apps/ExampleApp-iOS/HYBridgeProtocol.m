@@ -7,6 +7,8 @@
 //
 
 #import "HYBridgeProtocol.h"
+#import "BridgeManager.h"
+#import "WebViewJavascriptBridge.h"
 static NSString * const kHYBridgeProtocolHandledKey = @"HYBridgeProtocolHandledKey";
 
 @implementation HYBridgeProtocol
@@ -40,41 +42,21 @@ static NSString * const kHYBridgeProtocolHandledKey = @"HYBridgeProtocolHandledK
     //标示改request已经处理过了，防止无限循环
     [NSURLProtocol setProperty:@YES forKey:kHYBridgeProtocolHandledKey inRequest:mutableReqeust];
     
-    NSString *data = [mutableReqeust valueForHTTPHeaderField:@"data"];
-    data = [self urlDecoded: data];
-    NSLog(@"data:%@", data);
+    [[BridgeManager sharedInstance].bridge bridgeInterceptor:mutableReqeust];
     
-    //TODO: 待完善，这里通过具体的调用来处理即可。这样就不需要通过webview的shouldStartLoadWithRequest去拦截处理
+    NSHTTPURLResponse* response = [[NSHTTPURLResponse alloc] initWithURL:self.request.URL
+                                                              statusCode:200
+                                                             HTTPVersion:@"HTTP/1.1"
+                                                            headerFields:nil];
     
-    if (data) {
-        NSHTTPURLResponse* response = [[NSHTTPURLResponse alloc] initWithURL:self.request.URL
-                                                                  statusCode:200
-                                                                 HTTPVersion:@"HTTP/1.1"
-                                                                headerFields:nil];
-        
-        [self.client URLProtocol:self didReceiveResponse:response cacheStoragePolicy:NSURLCacheStorageNotAllowed];
-        
-        [self.client URLProtocolDidFinishLoading:self];
-
-    }
-    else {
-//        self.connection = [NSURLConnection connectionWithRequest:mutableReqeust delegate:self];
-    }
+    [self.client URLProtocol:self didReceiveResponse:response cacheStoragePolicy:NSURLCacheStorageNotAllowed];
+    
+    [self.client URLProtocolDidFinishLoading:self];
 }
 
 -(void)stopLoading
 {
     
-}
-
-- (NSString *)urlDecoded:(NSString*)str
-{
-    NSString *result = (__bridge_transfer NSString *)
-    CFURLCreateStringByReplacingPercentEscapesUsingEncoding(kCFAllocatorDefault,
-                                                            (CFStringRef)str,
-                                                            CFSTR(""),
-                                                            kCFStringEncodingUTF8);
-    return result;
 }
 
 

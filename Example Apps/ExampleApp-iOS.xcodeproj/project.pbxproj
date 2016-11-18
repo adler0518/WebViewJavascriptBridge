@@ -23,6 +23,8 @@
 		2CEB3EC21602563600548120 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2CEB3EC11602563600548120 /* Foundation.framework */; };
 		2CEB3EC41602563600548120 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2CEB3EC31602563600548120 /* CoreGraphics.framework */; };
 		F11D6D7D1DDDD193003AFCF0 /* HYBridgeProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = F11D6D7C1DDDD193003AFCF0 /* HYBridgeProtocol.m */; };
+		F11D6D821DDE93EF003AFCF0 /* WebViewJavascriptBridge_JS2.m in Sources */ = {isa = PBXBuildFile; fileRef = F11D6D811DDE93EF003AFCF0 /* WebViewJavascriptBridge_JS2.m */; };
+		F11D6D851DDE9722003AFCF0 /* BridgeManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F11D6D841DDE9722003AFCF0 /* BridgeManager.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -53,6 +55,10 @@
 		2CEB3EC31602563600548120 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		F11D6D7B1DDDD193003AFCF0 /* HYBridgeProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HYBridgeProtocol.h; sourceTree = "<group>"; };
 		F11D6D7C1DDDD193003AFCF0 /* HYBridgeProtocol.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HYBridgeProtocol.m; sourceTree = "<group>"; };
+		F11D6D801DDE93EF003AFCF0 /* WebViewJavascriptBridge_JS2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebViewJavascriptBridge_JS2.h; sourceTree = "<group>"; };
+		F11D6D811DDE93EF003AFCF0 /* WebViewJavascriptBridge_JS2.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebViewJavascriptBridge_JS2.m; sourceTree = "<group>"; };
+		F11D6D831DDE9722003AFCF0 /* BridgeManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BridgeManager.h; sourceTree = "<group>"; };
+		F11D6D841DDE9722003AFCF0 /* BridgeManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BridgeManager.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -73,6 +79,8 @@
 		2C1562A7176B9F5400B4AE50 /* WebViewJavascriptBridge */ = {
 			isa = PBXGroup;
 			children = (
+				F11D6D801DDE93EF003AFCF0 /* WebViewJavascriptBridge_JS2.h */,
+				F11D6D811DDE93EF003AFCF0 /* WebViewJavascriptBridge_JS2.m */,
 				2C3E7C441C5A890A00A1E322 /* WebViewJavascriptBridge_JS.h */,
 				2C3E7C451C5A890A00A1E322 /* WebViewJavascriptBridge_JS.m */,
 				2C1562A8176B9F6200B4AE50 /* WebViewJavascriptBridge.h */,
@@ -100,6 +108,8 @@
 				2CA046211711A94E006DEE8B /* Supporting Files */,
 				F11D6D7B1DDDD193003AFCF0 /* HYBridgeProtocol.h */,
 				F11D6D7C1DDDD193003AFCF0 /* HYBridgeProtocol.m */,
+				F11D6D831DDE9722003AFCF0 /* BridgeManager.h */,
+				F11D6D841DDE9722003AFCF0 /* BridgeManager.m */,
 			);
 			path = "ExampleApp-iOS";
 			sourceTree = "<group>";
@@ -210,6 +220,7 @@
 			files = (
 				2C3E7C461C5A890A00A1E322 /* WebViewJavascriptBridge_JS.m in Sources */,
 				2C1562C0176BA63500B4AE50 /* WebViewJavascriptBridge.m in Sources */,
+				F11D6D851DDE9722003AFCF0 /* BridgeManager.m in Sources */,
 				F11D6D7D1DDDD193003AFCF0 /* HYBridgeProtocol.m in Sources */,
 				0E8082DB19EDC32300479452 /* WKWebViewJavascriptBridge.m in Sources */,
 				2C45CA2C1884AD520002A4E2 /* ExampleUIWebViewController.m in Sources */,
@@ -217,6 +228,7 @@
 				2CA045C217117439006DEE8B /* ExampleAppDelegate.m in Sources */,
 				0E50601C1A01B442000BEEEA /* WebViewJavascriptBridgeBase.m in Sources */,
 				2CA045C317117439006DEE8B /* main.m in Sources */,
+				F11D6D821DDE93EF003AFCF0 /* WebViewJavascriptBridge_JS2.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

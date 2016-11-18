@@ -7,6 +7,7 @@
 //
 
 #import "WebViewJavascriptBridge.h"
+#import "HYBridgeProtocol.h"
 
 #if __has_feature(objc_arc_weak)
     #define WVJB_WEAK __weak
@@ -183,6 +184,32 @@
     if (strongDelegate && [strongDelegate respondsToSelector:@selector(webViewDidStartLoad:)]) {
         [strongDelegate webViewDidStartLoad:webView];
     }
+}
+
+#pragma mark - 技术方案二
+- (void)bridgeInterceptor:(NSURLRequest *)request {
+    NSString *data = [request valueForHTTPHeaderField:@"data"];
+    NSString *messageQueueString = [self urlDecoded: data];
+    NSLog(@"data:%@", messageQueueString);
+    
+    [_base flushMessageQueue:messageQueueString];
+}
+
+- (NSString *)urlDecoded:(NSString*)str
+{
+    NSString *result = (__bridge_transfer NSString *)
+    CFURLCreateStringByReplacingPercentEscapesUsingEncoding(kCFAllocatorDefault,
+                                                            (CFStringRef)str,
+                                                            CFSTR(""),
+                                                            kCFStringEncodingUTF8);
+    return result;
+}
+
+// 注册拦截器，拦截所有的 JS Api 请求
+- (void)registerIntercepter
+{
+    [NSURLProtocol registerClass:[HYBridgeProtocol class]];
+    _base.protocolPlanSign = YES;
 }
 
 #endif

@@ -36,4 +36,8 @@
 - (void)setWebViewDelegate:(WVJB_WEBVIEW_DELEGATE_TYPE*)webViewDelegate;
 - (void)disableJavscriptAlertBoxSafetyTimeout;
 
+
+- (void)bridgeInterceptor:(NSURLRequest *)request;
+- (void)registerIntercepter;
+
 @end

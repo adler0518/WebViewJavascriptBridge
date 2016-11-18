@@ -10,6 +10,8 @@
 #import "WebViewJavascriptBridge.h"
 #import "HYBridgeProtocol.h"
 
+#import "BridgeManager.h"
+
 @interface ExampleUIWebViewController ()
 @property WebViewJavascriptBridge* bridge;
 @end
@@ -22,12 +24,15 @@
     UIWebView* webView = [[UIWebView alloc] initWithFrame:self.view.bounds];
     [self.view addSubview:webView];
     
-    [self registerIntercepter];
-    
     [WebViewJavascriptBridge enableLogging];
     
     _bridge = [WebViewJavascriptBridge bridgeForWebView:webView];
     [_bridge setWebViewDelegate:self];
+    
+    //采用第二种技术方案
+    [_bridge registerIntercepter];
+    
+    [BridgeManager sharedInstance].bridge = _bridge;
     
     [_bridge registerHandler:@"testObjcCallback" handler:^(id data, WVJBResponseCallback responseCallback) {
         NSLog(@"testObjcCallback called: %@", data);
@@ -38,12 +43,6 @@
     
     [self renderButtons:webView];
     [self loadExamplePage:webView];
-}
-
-// 注册拦截器，拦截所有的 JS Api 请求
-- (void)registerIntercepter
-{
-    [NSURLProtocol registerClass:[HYBridgeProtocol class]];
 }
 
 - (void)webViewDidStartLoad:(UIWebView *)webView {

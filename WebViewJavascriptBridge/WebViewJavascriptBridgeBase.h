@@ -22,6 +22,7 @@ typedef NSDictionary WVJBMessage;
 
 @interface WebViewJavascriptBridgeBase : NSObject
 
+@property (nonatomic, assign) BOOL *protocolPlanSign;       //采用protocol技术方案
 
 @property (weak, nonatomic) id <WebViewJavascriptBridgeBaseDelegate> delegate;
 
